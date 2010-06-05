@@ -1,5 +1,6 @@
 package oauth.signpost.mocks;
 
+import static oauth.signpost.OAuth.ISO8859_1;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +25,7 @@ public class DefaultOAuthProviderMock extends DefaultOAuthProvider implements OA
 
     public void mockConnection(String responseBody) throws Exception {
         this.connectionMock = mock(HttpURLConnection.class);
-        InputStream is = new ByteArrayInputStream(responseBody.getBytes());
+        InputStream is = new ByteArrayInputStream(responseBody.getBytes(ISO8859_1.name()));
         when(connectionMock.getResponseCode()).thenReturn(200);
         when(connectionMock.getInputStream()).thenReturn(is);
     }

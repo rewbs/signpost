@@ -1,6 +1,7 @@
 package oauth.signpost;
 
 import static junit.framework.Assert.assertNull;
+import static oauth.signpost.OAuth.ISO8859_1;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -88,7 +89,7 @@ public abstract class OAuthConsumerTest extends SignpostTestBase {
         // mock a request that has custom query, body, and header params set
         HttpRequest request = mock(HttpRequest.class);
         when(request.getRequestUrl()).thenReturn("http://example.com?a=1+1");
-        ByteArrayInputStream body = new ByteArrayInputStream("b=2+2".getBytes());
+        ByteArrayInputStream body = new ByteArrayInputStream("b=2+2".getBytes(ISO8859_1.name()));
         when(request.getMessagePayload()).thenReturn(body);
         when(request.getContentType()).thenReturn(
             "application/x-www-form-urlencoded; charset=ISO-8859-1");

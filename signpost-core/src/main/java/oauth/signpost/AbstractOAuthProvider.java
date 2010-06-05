@@ -10,6 +10,8 @@
  */
 package oauth.signpost;
 
+import static oauth.signpost.OAuth.ISO8859_1;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -225,7 +227,7 @@ public abstract class AbstractOAuthProvider implements OAuthProvider {
         if (response == null) {
             return;
         }
-        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getContent()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getContent(), ISO8859_1));
         StringBuilder responseBody = new StringBuilder();
 
         String line = reader.readLine();

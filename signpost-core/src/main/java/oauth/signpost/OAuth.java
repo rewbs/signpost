@@ -14,6 +14,8 @@
  */
 package oauth.signpost;
 
+import static oauth.signpost.OAuth.ISO8859_1;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,6 +23,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +64,8 @@ public class OAuth {
     public static final String OAUTH_CALLBACK_CONFIRMED = "oauth_callback_confirmed";
 
     public static final String OAUTH_VERIFIER = "oauth_verifier";
+    
+    public static final Charset ISO8859_1 = Charset.forName("ISO8859-1");
 
     /**
      * Pass this value as the callback "url" upon retrieving a request token if
@@ -110,9 +116,9 @@ public class OAuth {
                 } else {
                     into.write('&');
                 }
-                into.write(percentEncode(safeToString(entry.getKey())).getBytes());
+                into.write(percentEncode(safeToString(entry.getKey())).getBytes(ISO8859_1.name()));
                 into.write('=');
-                into.write(percentEncode(safeToString(entry.getValue())).getBytes());
+                into.write(percentEncode(safeToString(entry.getValue())).getBytes(ISO8859_1.name()));
             }
         }
     }
@@ -126,7 +132,8 @@ public class OAuth {
             throws IOException {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         formEncode(parameters, b);
-        return new String(b.toByteArray());
+        ByteBuffer bb = ByteBuffer.wrap(b.toByteArray());
+    	return ISO8859_1.decode(bb).toString();
     }
 
     /** Parse a form-urlencoded document. */
@@ -155,7 +162,7 @@ public class OAuth {
     public static HttpParameters decodeForm(InputStream content)
             throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(
-                content));
+                content, ISO8859_1));
         StringBuilder sb = new StringBuilder();
         String line = reader.readLine();
         while (line != null) {

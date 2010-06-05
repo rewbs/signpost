@@ -1,11 +1,13 @@
 package oauth.signpost.basic;
 
 import static junit.framework.Assert.assertTrue;
+import static oauth.signpost.OAuth.ISO8859_1;
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import oauth.signpost.OAuth;
 import oauth.signpost.http.HttpRequest;
 
 import org.junit.Before;
@@ -59,7 +61,7 @@ public abstract class HttpRequestAdapterTestBase {
     @Test
     public void shouldReturnCorrectMessagePayload() throws Exception {
         String actual = new BufferedReader(new InputStreamReader(
-                request.getMessagePayload())).readLine();
+                request.getMessagePayload(), ISO8859_1)).readLine();
         assertEquals(PAYLOAD, actual);
     }
 }

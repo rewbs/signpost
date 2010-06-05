@@ -14,9 +14,15 @@
  */
 package oauth.signpost.signature;
 
+import static oauth.signpost.OAuth.ISO8859_1;
+
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 
+import oauth.signpost.OAuth;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.http.HttpRequest;
 import oauth.signpost.http.HttpParameters;
@@ -59,11 +65,18 @@ public abstract class OAuthMessageSigner implements Serializable {
     }
 
     protected byte[] decodeBase64(String s) {
-        return base64.decode(s.getBytes());
+        try {
+			return base64.decode(s.getBytes(ISO8859_1.name()));
+		} catch (UnsupportedEncodingException e) {
+			// Won't happen - all JVMs must support ISO8859_1.
+			return null;
+		}
     }
 
     protected String base64Encode(byte[] b) {
-        return new String(base64.encode(b));
+    	ByteBuffer bb = ByteBuffer.wrap(base64.encode(b));
+    	return ISO8859_1.decode(bb).toString();
+
     }
 
     private void readObject(java.io.ObjectInputStream stream)

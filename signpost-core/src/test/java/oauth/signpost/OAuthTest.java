@@ -50,7 +50,7 @@ public class OAuthTest {
 
     @Test
     public void shouldCorrectlyFormEncodeParameters() throws Exception {
-        HashMap<String, String> params = new HashMap<String, String>();
+        HashMap<String, String> params = new LinkedHashMap<String, String>();
         params.put("one", rfc3986ReservedCharacters);
         params.put(rfc3986ReservedCharacters, rfc3986UnreservedCharacters);
 
